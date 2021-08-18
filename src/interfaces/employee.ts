@@ -1,5 +1,7 @@
 export default interface IEmployee {
-  id: number;
+  id?: number;
   name: string;
   matricula: string;
 }
+
+// id? Parametro opcional

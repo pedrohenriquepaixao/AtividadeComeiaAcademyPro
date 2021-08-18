@@ -8,10 +8,10 @@ export async function up(Knex: Knex){
             .references('id')
             .inTable('locations');
         table.integer('employee_id')
-        .notNullable()
-        .references('id')
-        .inTable('employees');
-    })
+            .notNullable()
+            .references('id')
+            .inTable('employees');
+        })
 }
 
 export async function down(Knex: Knex){

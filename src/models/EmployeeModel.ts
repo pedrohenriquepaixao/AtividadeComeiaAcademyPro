@@ -1,6 +1,5 @@
 import knex from "../database/connection";
 import IEmployee from "../interfaces/employee";
-import ILocations from "../interfaces/location";
 
 export default class LocationModel {
   public async getAll() {
@@ -9,12 +8,12 @@ export default class LocationModel {
     return location;
   }
 
-  public async create(employee: IEmployee, locations: ILocations[]) {
+  public async create(employee: IEmployee, locations: number[]) {
     const transaction = await knex.transaction();
 
     const employeeExist = await transaction("employees")
       .select()
-      .where({ name: employee.name })
+      .where({ name: employee.matricula })
       .first();
 
     if (employeeExist) {
@@ -52,8 +51,29 @@ export default class LocationModel {
     await transaction.commit();
 
     return {
-      ...locations,
+      ...employee,
       id,
+    };
+  }
+
+  public async getById(id: string){
+    const employee = await knex('employees')
+                            .select()
+                            .where({id: id})
+                            .first();
+    if(!employee){
+      return { message: 'Employee não encontrado'}
+    }
+    
+    const locations = await knex('locations_employees as le')
+      .join("locations as l","le.location_id",'=',"l.id")
+      .where("le.employee_id",id)
+      .groupBy('l.id')
+      .select();
+
+    return {
+      ...employee,
+      locations
     };
   }
 }

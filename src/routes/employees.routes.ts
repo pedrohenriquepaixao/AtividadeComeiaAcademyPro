@@ -7,5 +7,6 @@ const employeeController = new EmployeeController();
 
 employeeRouter.get("/", employeeController.index);
 employeeRouter.post("/", employeeController.create);
+employeeRouter.get("/:id",employeeController.getById);
 
 export default employeeRouter;

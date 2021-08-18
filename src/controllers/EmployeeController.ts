@@ -3,6 +3,7 @@ import IEmployee from "../interfaces/employee";
 import EmployeeModel from "../models/EmployeeModel";
 
 export default class EmployeeController {
+  
   public async index(request: Request, response: Response) {
     const employeeModel = new EmployeeModel();
 
@@ -28,5 +29,15 @@ export default class EmployeeController {
     const newLocation = await employeeModel.create(employee, locations);
 
     response.json(newLocation);
+  }
+
+  public async getById(request: Request,response: Response){
+    // const id: string = request.params as string;
+    const employeeModel = new EmployeeModel();
+    const {id} = request.params;
+    const employees = await employeeModel.getById(id);
+
+    return response.json(employees);
+
   }
 }
